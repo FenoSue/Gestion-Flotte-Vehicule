@@ -27,6 +27,12 @@ public class HelloController {
     ServiceAdmin sa = new ServiceAdmin();
     
     @CrossOrigin(origins = "*")
+    @GetMapping("/test")
+    public String test() throws Exception {
+        return "ok insert Vehicule";
+    }
+    
+    @CrossOrigin(origins = "*")
     @GetMapping("/AddVehicule")
     public String insertVoiture(String matricule, String marque, String modele) throws Exception {
         sv.insertVehicule(matricule, marque, modele);
