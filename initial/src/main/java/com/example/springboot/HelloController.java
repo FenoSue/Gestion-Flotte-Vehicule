@@ -21,7 +21,7 @@ import services.springboot.ServiceVehicule;
 public class HelloController {
 
     private Token token = new Token();
-    ServiceVehicule sv = new ServiceVehicule();
+    ServiceVehicule sv = new ServiceVehicule(); 
     ServiceKilometrage sk = new ServiceKilometrage();
     ServiceAdmin sa = new ServiceAdmin();
     
