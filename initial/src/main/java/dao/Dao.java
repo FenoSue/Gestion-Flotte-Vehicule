@@ -103,12 +103,17 @@ public class Dao {
                     where+=condition.get(i).getRequette();
                 }
             }
-            if(apresWhere!=null)
+            if(apresWhere!=null){
+                if(where.trim().equals("") && apresWhere.trim().startsWith("and")) {
+                    where+= " where 1>0 ";
+                }
                 where+=" "+apresWhere;
+            }
         }
         catch(Exception exception) {
             throw exception;
         }
+        System.out.println("where : "+where);
         return where;
     }
     
