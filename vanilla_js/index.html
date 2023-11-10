@@ -15,22 +15,23 @@
                 <div class="page-header panel-heading">
                     <h4>LOGIN</h4>
                 </div>
-                <form role="form" action="Login" method="post">
-                    <div class="form-group">
-                        <label class="nom">Nom</label>
-                        <input type="text" class="form-control" name="nom" placeholder="Enter nom">
-                    </div>
-                    <div class="form-group">
-                        <label class="mdp">Password</label>
-                        <input type="password" class="form-control" name="mdp" placeholder="Password">
-                    </div>
-                    <button type="submit" class="bouton btn btn-default">Se connecter</button>
-                </form>
+                <div class="form-group">
+                    <label class="nom">Login</label>
+                    <input type="text" class="form-control" id="nom" placeholder="Enter nom">
+                    <div id="errorLogin"></div>
+                </div>
+                <div class="form-group">
+                    <label class="mdp">Password</label>
+                    <input type="password" class="form-control" id="mdp" placeholder="Password">
+                    <div id="errorPwd"></div>
+                </div>
+                <button type="submit" class="bouton btn btn-default" onclick="connection(   )">Se connecter</button>
             </div>
         </center>
     </div>
 
     <script src="vehicule.js"></script>
     <script src="kilometrage.js"></script>
+    <script src="connexion.js"></script>
 </body>
 </html>

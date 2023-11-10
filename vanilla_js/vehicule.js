@@ -16,7 +16,11 @@ function getKilometrage(idVehicule) {
     })
     .then(data => {
         const div = document.createElement("div");
-        div.className = "panel panel-default";
+        div.className = "panel panel-default row";
+        const detail = document.createElement("div");
+        detail.className = "col-md-6"
+        const kilometre = document.createElement("div");
+        kilometre.className = "col-md-6"
 
         const jsonObject = JSON.parse(JSON.stringify(data));
         const datas = jsonObject.data;
@@ -28,41 +32,44 @@ function getKilometrage(idVehicule) {
                 "Debut kilometrage : "+kilometrage.debutKilometrage+
                 "Fin kilometrage : "+kilometrage.finKilometrage
             )
-
-            const label1 = document.createElement("label");
-            label1.textContent = "IdVehicule";
             const paragraphe1 = document.createElement("p");
-            paragraphe1.textContent = kilometrage.idVehicule;
+            paragraphe1.textContent = "IdVehicule : "+kilometrage.idVehicule;
 
-            const label2 = document.createElement("label");
-            label2.textContent = "Date kilometrage";
             const paragraphe2 = document.createElement("p");
-            paragraphe2.textContent = kilometrage.dateKilometrage;
+            paragraphe2.textContent = "Matricule : "+kilometrage.matricule;
 
-            const label3 = document.createElement("label");
-            label3.textContent = "Debut kilometrage";
             const paragraphe3 = document.createElement("p");
-            paragraphe3.textContent = kilometrage.debutKilometrage;
+            paragraphe3.textContent = "Marque : "+kilometrage.marque;
 
-            const label4 = document.createElement("label");
-            label4.textContent = "Fin kilometrage";
             const paragraphe4= document.createElement("p");
-            paragraphe4.textContent = kilometrage.finKilometrage;
+            paragraphe4.textContent = "Modele : "+kilometrage.modele;
 
-            div.appendChild(label1);
-            div.appendChild(paragraphe1);
-            div.appendChild(label2);
-            div.appendChild(paragraphe2);
-            div.appendChild(label3);
-            div.appendChild(paragraphe3);
-            div.appendChild(label4);
-            div.appendChild(paragraphe4);
+            detail.appendChild(paragraphe1);
+            detail.appendChild(paragraphe2);
+            detail.appendChild(paragraphe3);
+            detail.appendChild(paragraphe4);
+
+            const paragraphe5 = document.createElement("p");
+            paragraphe5.textContent = "Date kilometrage : "+kilometrage.dateKilometrage;
+
+            const paragraphe6 = document.createElement("p");
+            paragraphe6.textContent = "Debut kilometrage : "+kilometrage.debut;
+
+            const paragraphe7 = document.createElement("p");
+            paragraphe7.textContent = "Fin kilometrage : "+kilometrage.fin;
+
+            kilometre.appendChild(paragraphe5);
+            kilometre.appendChild(paragraphe6);
+            kilometre.appendChild(paragraphe7);
+
             console.log("Données du web service:", "Kilometrage "+kilometrage.id);
         });
         const hr = document.createElement("hr");
         const title = document.createElement("h4");
         title.textContent = "Détail du kilometrage du véhicule";
         title.className = "title";
+        div.appendChild(detail);
+        div.appendChild(kilometre);
         document.body.appendChild(hr);
         document.body.appendChild(title );
         document.body.appendChild(div);
@@ -115,7 +122,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 link.textContent = "Vehicule "+vehicule.id;
                 link.onclick = function() {
                     getKilometrage(vehicule.id);
-                };
+                };  
                 li.appendChild(link);
                 ul.appendChild(li);
                 console.log("Données du web service:", "Vehicule "+vehicule.id);

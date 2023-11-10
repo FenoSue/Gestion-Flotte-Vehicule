@@ -7,7 +7,6 @@ package classeViews.springboot;
 
 import annotations.AnnotationClass;
 import annotations.AnnotationField;
-import classes.springboot.Vehicule;
 import static dao.Dao.dao;
 import java.sql.Date;
 
@@ -26,7 +25,7 @@ public class KilometrageVehicule {
     @AnnotationField(attribut = "modele")
     String modele;
     @AnnotationField(attribut = "dateKilometrage")
-    Date datekilometrage;
+    Date dateKilometrage;
     @AnnotationField(attribut = "debut")
     int debut;
     @AnnotationField(attribut = "fin")
@@ -40,7 +39,7 @@ public class KilometrageVehicule {
         this.matricule = matricule;
         this.marque = marque;
         this.modele = modele;
-        this.datekilometrage = datekilometrage;
+        this.dateKilometrage = datekilometrage;
         this.debut = debut;
         this.fin = fin;
     }
@@ -77,12 +76,12 @@ public class KilometrageVehicule {
         this.modele = modele;
     }
 
-    public Date getDatekilometrage() {
-        return datekilometrage;
+    public Date getDateKilometrage() {
+        return dateKilometrage;
     }
 
-    public void setDatekilometrage(Date datekilometrage) {
-        this.datekilometrage = datekilometrage;
+    public void setDateKilometrage(Date dateKilometrage) {
+        this.dateKilometrage = dateKilometrage;
     }
 
     public int getDebut() {

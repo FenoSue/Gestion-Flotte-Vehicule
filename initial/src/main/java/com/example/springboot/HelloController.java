@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import services.springboot.ServiceAdmin;
 import services.springboot.ServiceKilometrage;
+import services.springboot.ServiceKilometrageVehicule;
 import services.springboot.ServiceVehicule;
 
 @RestController
@@ -23,6 +25,7 @@ public class HelloController {
     ServiceVehicule sv = new ServiceVehicule(); 
     ServiceKilometrage sk = new ServiceKilometrage();
     ServiceAdmin sa = new ServiceAdmin();
+    ServiceKilometrageVehicule skv = new ServiceKilometrageVehicule();
     
     @CrossOrigin(origins = "*")
     @GetMapping("/test")
@@ -74,15 +77,16 @@ public class HelloController {
     /* GET KILOMETRAGE D'UN VEHICULE */
     @CrossOrigin(origins = "*")
     @GetMapping("/ShowKilometrageVehicule")
-    public ResponseEntity<HttpRetour> getKilometrageVehicule(int idVehicule) throws Exception {
-        HttpRetour kilometrage = sk.getKilometrageVehicule(idVehicule);
+    public ResponseEntity<HttpRetour> getKilometrageVehicule(@RequestParam String idVehicule) throws Exception {
+        int id = Integer.parseInt(idVehicule);
+        HttpRetour kilometrage = skv.getKilometrageVehicule(id);
         ResponseEntity<HttpRetour> response = new ResponseEntity<>(kilometrage, HttpStatus.OK);
         return response;
     }
     
     /* LISTE DES KILOMETRAGES */
     @CrossOrigin(origins = "*")
-    @GetMapping("/ShowKilometrage")
+    @PostMapping("/ShowKilometrage")
     public ResponseEntity<HttpRetour> listeKilometrage() throws Exception {
         HttpRetour kilometrage = sk.listeKilometrage();
         ResponseEntity<HttpRetour> response = new ResponseEntity<>(kilometrage, HttpStatus.OK);

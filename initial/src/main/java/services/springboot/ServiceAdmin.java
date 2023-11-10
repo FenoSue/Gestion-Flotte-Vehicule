@@ -38,7 +38,7 @@ public class ServiceAdmin {
             String[] data = new String[1];
             try {
                 String genererToken = token.genererToken(admin.getId());
-                data[0] = "Voilà le Token : "+genererToken;
+                data[0] = genererToken;
             }
             catch(Exception ex) {
                 data[0] = "non-connecté";
