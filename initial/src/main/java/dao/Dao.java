@@ -103,17 +103,15 @@ public class Dao {
                     where+=condition.get(i).getRequette();
                 }
             }
-            if(apresWhere!=null){
+            if(apresWhere!=null)
                 if(where.trim().equals("") && apresWhere.trim().startsWith("and")) {
                     where+= " where 1>0 ";
                 }
                 where+=" "+apresWhere;
-            }
         }
         catch(Exception exception) {
             throw exception;
         }
-        System.out.println("where : "+where);
         return where;
     }
     
@@ -154,6 +152,24 @@ public class Dao {
             }
             else if(typecoloumn.equalsIgnoreCase("Timestamp") == true && namecoloumn.equalsIgnoreCase(fields.getName().toUpperCase()) == true) {
                 result = resultset.getTimestamp(j+1);
+                method = outil.getMethodSet(objet, fields);
+                try { method.invoke(temporaire, result); }
+                catch(IllegalAccessException | IllegalArgumentException | InvocationTargetException exception) { throw exception; }
+            }
+            else if(typecoloumn.equalsIgnoreCase("float") == true && namecoloumn.equalsIgnoreCase(fields.getName().toUpperCase()) == true) {
+                result = resultset.getFloat(j+1);
+                method = outil.getMethodSet(objet, fields);
+                try { method.invoke(temporaire, result); }
+                catch(IllegalAccessException | IllegalArgumentException | InvocationTargetException exception) { throw exception; }
+            }
+            else if(typecoloumn.equalsIgnoreCase("double") == true && namecoloumn.equalsIgnoreCase(fields.getName().toUpperCase()) == true) {
+                result = resultset.getDouble(j+1);
+                method = outil.getMethodSet(objet, fields);
+                try { method.invoke(temporaire, result); }
+                catch(IllegalAccessException | IllegalArgumentException | InvocationTargetException exception) { throw exception; }
+            }
+            else if(typecoloumn.equalsIgnoreCase("numeric") == true && namecoloumn.equalsIgnoreCase(fields.getName().toUpperCase()) == true) {
+                result = resultset.getDouble(j+1);
                 method = outil.getMethodSet(objet, fields);
                 try { method.invoke(temporaire, result); }
                 catch(IllegalAccessException | IllegalArgumentException | InvocationTargetException exception) { throw exception; }
@@ -466,13 +482,14 @@ public class Dao {
         try {
             where = this.getWhere(objetcondition, afterwhere, separateurIsAnd);
             requette+=where;
-            preparedstatement = connection.prepareStatement(requette);
+            preparedstatement = connection.prepareStatement(requette, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            System.out.println("requette : "+requette);
             int taille = objetcondition.size();
             for(i=0; i<taille; i++){
                 preparedstatement.setObject(i+1, objetcondition.get(i).getValue());
             }
             resultset = preparedstatement.executeQuery();
-            objectreturn = getResultat(table, object, requette, resultset, preparedstatement, connection);
+            objectreturn = getResultat(table, object, resultset, preparedstatement, connection);
         }
         catch(Exception exception) {
             throw exception;
@@ -490,7 +507,7 @@ public class Dao {
         return objectreturn;
     }
     
-    private Object[] getResultat(String table, Object objet, String requette, ResultSet resultset, PreparedStatement preparedstatement, Connection connection) throws Exception {
+    private Object[] getResultat(String table, Object objet, ResultSet resultset, PreparedStatement preparedstatement, Connection connection) throws Exception {
         int i=0;
         int j=0;
         Outil outil = new Outil();
@@ -498,8 +515,6 @@ public class Dao {
         Object[] objetreturn = null;
         Field[] fields = null;
         try {
-            preparedstatement = connection.prepareStatement(requette, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            resultset = preparedstatement.executeQuery();
             int taillecoloumn = outil.getTailleColoumn(table, connection, resultset, preparedstatement, objet);
             String[] namecoloumn = new String[taillecoloumn];
             String[] typecoloumn = new String[taillecoloumn];

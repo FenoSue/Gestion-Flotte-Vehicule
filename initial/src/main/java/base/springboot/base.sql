@@ -34,3 +34,8 @@ create table Kilometrage (
     debutKilometrage integer default 1,
     finkilometrage integer default 1
 );
+
+create view KilometrageVehicule as
+select vehicule.id as idVehicule, vehicule.matricule as matricule, vehicule.marque as marque, vehicule.modele as modele, 
+kilometrage.datekilometrage as dateKilometrage, kilometrage.debutkilometrage as debut,kilometrage.finkilometrage as fin 
+from vehicule join kilometrage on vehicule.id=kilometrage.idvehicule;

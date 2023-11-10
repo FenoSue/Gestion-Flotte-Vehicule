@@ -71,10 +71,14 @@ public class ServiceVehicule {
         return h;
     }
     
-    public void deleteVehicule(int idVehicule) throws Exception {
-        HttpRetour vehicule = this.getVehicule(idVehicule);
-        if(vehicule.getStatus()==200) {
-            v.delete((Vehicule) vehicule.getData()[0]);
+    public HttpRetour deleteVehicule(int idVehicule) throws Exception {
+        HttpRetour vahicule = this.getVehicule(idVehicule);
+        if(vahicule.getStatus()==200) {
+            v.delete((Vehicule) vahicule.getData()[0]);
+            Object[] data = new Object[1];
+            data[0] = vahicule;
+            h.setHttpRetour(h, 200, "Ok", data);
         }
+        return h;
     }
 }

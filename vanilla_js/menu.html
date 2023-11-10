@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <title>Gestion Flotte Vehicule</title> 
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="page">
+        <div class="menu">
+            <nav class="navbar navbar-default" role="navigation">
+                <div class="container-fluid">
+                    <!-- Brand and toggle get grouped for better mobile display -->
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand"><span class="glyphicon glyphicon-home"></span></a>
+                    </div>
+
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <ul class="nav navbar-nav">
+                            <li class=""><a onclick="listeVehicule()">Liste vehicule</a></li>
+                            <li class=""><a onclick="">Liste kilometrage</a></li>
+                        </ul>
+                        <ul class="nav navbar-nav navbar-right">
+
+                        </ul>
+                    </div><!-- /.navbar-collapse -->
+                </div><!-- /.container-fluid -->
+            </nav>
+        </div>
+
+        <div class="body" id="body">
+        </div>
+    </div>
+
+    <script src="vehicule.js"></script>
+    <script src="kilometrage.js"></script>
+</body>
+</html>

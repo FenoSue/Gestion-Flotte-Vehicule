@@ -2,9 +2,7 @@ package com.example.springboot;
 
 import classes.springboot.Admin;
 import classes.springboot.HttpRetour;
-import classes.springboot.Kilometrage;
 import classes.springboot.Token;
-import classes.springboot.Vehicule;
 import java.sql.Date;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,25 +42,25 @@ public class HelloController {
     @CrossOrigin(origins = "*")
     @PostMapping("/ShowVehicule")
     public ResponseEntity<HttpRetour> listeVehicule() throws Exception {
-        Vehicule[] vehicule = sv.listeVehicule();
-        ResponseEntity<Vehicule[]> response = new ResponseEntity<>(vehicule, HttpStatus.OK);
+        HttpRetour vehicule = sv.listeVehicule();
+        ResponseEntity<HttpRetour> response = new ResponseEntity<>(vehicule, HttpStatus.OK);
         return response;
     }
     
     /* UPDATE MATRICULE VEHICULE */
     @CrossOrigin(origins = "*")
     @GetMapping("/UpdateVehicule")
-    public String updateVehicule(int idVehicule, String matricule) throws Exception {
-        sv.updateVehicule(idVehicule, matricule);
-        return "ok update Vehicule";
+    public HttpRetour updateVehicule(int idVehicule, String matricule) throws Exception {
+        HttpRetour update = sv.updateVehicule(idVehicule, matricule);
+        return update;
     }
     
     /* DELETE UN VEHICULE */
     @CrossOrigin(origins = "*")
     @DeleteMapping("/DropVehicule")
-    public String deleteVehicule(int idVehicule) throws Exception {
-        sv.deleteVehicule(idVehicule);
-        return "ok delete Vehicule";
+    public HttpRetour deleteVehicule(int idVehicule) throws Exception {
+        HttpRetour delete = sv.deleteVehicule(idVehicule);
+        return delete;
     }
     
     /* INSERTION DE KILOMETRAGE D'UN VEHICULE */
@@ -71,15 +69,6 @@ public class HelloController {
     public HttpRetour insertKilometrage(int idVehicule, Date dateKilometrage, int debutKilometrage, int finKilometrage) throws Exception {
         HttpRetour kilometrage = sk.insertKilometrage(idVehicule, dateKilometrage, debutKilometrage, finKilometrage);
         return kilometrage;
-    }
-    
-    /* GET KILOMETRAGE AVEC IDKILOMETRAGE */
-    @CrossOrigin(origins = "*")
-    @GetMapping("/ShowKilometrageById")
-    public ResponseEntity<HttpRetour> getKilometrage(int idKilometrage) throws Exception {
-        HttpRetour kilometrage = sk.getKilometrage(idKilometrage);
-        ResponseEntity<HttpRetour> response = new ResponseEntity<>(kilometrage, HttpStatus.OK);
-        return response;
     }
     
     /* GET KILOMETRAGE D'UN VEHICULE */

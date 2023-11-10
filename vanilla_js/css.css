@@ -1,0 +1,17 @@
+.title {
+    margin-left: 50px;
+    color: cornflowerblue;
+}
+
+.list {
+    margin-left: 50px;
+    max-width: 200px;
+}
+
+.panel {
+    padding-left: 50px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-left: 100px;
+    max-width: 500px;
+}
