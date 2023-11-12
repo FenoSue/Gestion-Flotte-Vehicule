@@ -103,7 +103,7 @@ public class Dao {
                     where+=condition.get(i).getRequette();
                 }
             }
-            if(apresWhere!=null){
+            if(apresWhere!=null) {
                 if(where.trim().equals("") && apresWhere.trim().startsWith("and")) {
                     where+= " where 1>0 ";
                 }
@@ -247,6 +247,7 @@ public class Dao {
             value+=")";
        
             requette+=colomn+" values "+value;
+            System.out.println("requette insert : "+requette);
             preparedstatement=connection.prepareStatement(requette);
             for(int i=0;i<taille;i++) {
                 preparedstatement.setObject(i+1 ,listInsert.get(i).getValue());
@@ -336,6 +337,7 @@ public class Dao {
                 }
             }
             preparedStatement = connection.prepareStatement(requette);
+            System.out.println("requette update : "+requette);
             for(i=0; i<tailleModifier; i++,j++) {
                 preparedStatement.setObject(j+1, modifier.get(i).getValue());
             }
@@ -490,7 +492,7 @@ public class Dao {
                 preparedstatement.setObject(i+1, objetcondition.get(i).getValue());
             }
             resultset = preparedstatement.executeQuery();
-            objectreturn = getResultat(table, object, resultset, preparedstatement, connection);
+            objectreturn = getResultat(object, resultset, preparedstatement, connection);
         }
         catch(Exception exception) {
             throw exception;
@@ -508,7 +510,7 @@ public class Dao {
         return objectreturn;
     }
     
-    private Object[] getResultat(String table, Object objet, ResultSet resultset, PreparedStatement preparedstatement, Connection connection) throws Exception {
+    private Object[] getResultat(Object objet, ResultSet resultset, PreparedStatement preparedstatement, Connection connection) throws Exception {
         int i=0;
         int j=0;
         Outil outil = new Outil();
@@ -516,7 +518,7 @@ public class Dao {
         Object[] objetreturn = null;
         Field[] fields = null;
         try {
-            int taillecoloumn = outil.getTailleColoumn(table, connection, resultset, preparedstatement, objet);
+            int taillecoloumn = resultset.getMetaData().getColumnCount();
             String[] namecoloumn = new String[taillecoloumn];
             String[] typecoloumn = new String[taillecoloumn];
             for(i=0; i<taillecoloumn; i++) {
@@ -551,5 +553,26 @@ public class Dao {
             throw e;
         }
         return objetreturn;
+    }
+    
+    public Object[] selectRequette(Object objet, String requette, Connection connection) throws Exception {
+        Object[] listeObjet = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        boolean verifieConnection = false;
+        if(connection==null) {
+            verifieConnection = true;
+            connection = new Connexion().getConnection();
+        }
+        try {
+            statement = connection.prepareStatement(requette, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            System.out.println("requette : "+requette);
+            resultSet = statement.executeQuery();
+            listeObjet = getResultat(objet, resultSet, statement, connection);
+        } 
+        catch (Exception ex) {
+            throw ex;
+        }
+        return listeObjet;
     }
 }
