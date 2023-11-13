@@ -5,10 +5,13 @@
  */
 package classes.springboot;
 
+import annotations.AnnotationClass;
+import annotations.AnnotationField;
+import static dao.Dao.dao;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import java.util.Date;
+import java.sql.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,15 +19,28 @@ import java.util.Set;
  *
  * @author USER
  */
+@AnnotationClass(table = "Token")
 public class Token {
-    public static final long expiration = 100000000;
+    public static final long expiration = 86400;
     public static final String keyToken = "Token22";
-    private Set<String> revokedTokens = new HashSet<>();
     
+    @AnnotationField(attribut = "id")
     int id;
-    String token;
-    Date dateExpiration;
+    @AnnotationField(attribut = "utilisateur")
     int utilisateur;
+    @AnnotationField(attribut = "token")
+    String token;
+    @AnnotationField(attribut = "dateExpiration")
+    Date dateExpiration;
+
+    public Token() {
+    }
+
+    public Token(int utilisateur, String token, Date dateExpiration) {
+        this.utilisateur = utilisateur;
+        this.token = token;
+        this.dateExpiration = dateExpiration;
+    }
 
     public int getId() {
         return id;
@@ -34,6 +50,14 @@ public class Token {
         this.id = id;
     }
 
+    public int getUtilisateur() {
+        return utilisateur;
+    }
+
+    public void setUtilisateur(int utilisateur) {
+        this.utilisateur = utilisateur;
+    }
+    
     public String getToken() {
         return token;
     }
@@ -50,50 +74,78 @@ public class Token {
         this.dateExpiration = dateExpiration;
     }
 
-    public int getUtilisateur() {
-        return utilisateur;
-    }
-
-    public void setUtilisateur(int utilisateur) {
-        this.utilisateur = utilisateur;
+    public void create(Token tokenGenerer) throws Exception {
+        try {
+            dao().insert(tokenGenerer, null);
+        }
+        catch(Exception exception) {
+            throw exception;
+        }
     }
     
-    public String genererToken(int utilisateurId) {
+    public Token read(int idAdmin) throws Exception {
+        Token tokenAdmin = new Token();
+        Token token = new Token();
+        Object[] objet = null;
+        int i=0;
+        try {
+            token.setUtilisateur(idAdmin);
+            objet = dao().select(token, null);
+            for(i=0; i<objet.length; i++) {
+                tokenAdmin = (Token) objet[i];
+            }
+        }
+        catch(Exception exception) {
+            throw exception;
+        }
+        return tokenAdmin;
+    }
+    
+    public Token read(String tokenUtilisateur) throws Exception {
+        Token tokenAdmin = new Token();
+        Token token = new Token();
+        Object[] objet = null;
+        int i=0;
+        try {
+            token.setToken(tokenUtilisateur);
+            objet = dao().select(token, null);
+            for(i=0; i<objet.length; i++) {
+                tokenAdmin = (Token) objet[i];
+            }
+        }
+        catch(Exception exception) {
+            throw exception;
+        }
+        return tokenAdmin;
+    }
+    
+    public void update(Token token, Token newToken) throws Exception {
+        try {
+            dao().update(token, newToken, null);
+        }
+        catch(Exception exception) {
+            throw exception;
+        }
+    }
+    
+    public void delete(Token token) throws Exception {
+        try {
+            dao().delete(token, null);
+        }
+        catch(Exception exception) {
+            throw exception;
+        }
+    }
+    
+    public String genererToken(int utilisateurId) throws Exception {
+        Token tokenGenerer = new Token();
         long now = System.currentTimeMillis();
-        Date date = new Date(now + Token.expiration);
+        Date date = new Date(expiration);
         String token = Jwts.builder().signWith(SignatureAlgorithm.HS256, Token.keyToken).setIssuedAt(new Date(now)).setExpiration(date).claim("idUtilisateur", utilisateurId).compact();
+        Token tokenAdmin = read(utilisateurId);
+        tokenGenerer.setToken(token);
+        tokenGenerer.setDateExpiration(date);
+        update(tokenAdmin, tokenGenerer);
         return token;
-    }
-    
-    public Token ReturnToken(int idUtilisateur) {
-        String token = new Token().genererToken(utilisateur);
-        Claims claim = Jwts.parser().setSigningKey(Token.keyToken).parseClaimsJws(token).getBody();
-        Token newToken = new Token();
-        newToken.setToken(token);
-        newToken.setDateExpiration(claim.getExpiration());
-        newToken.setUtilisateur(idUtilisateur);
-        return newToken;
-    }
-    
-    public Date getDateExpiration(String token) {
-        Claims claim = Jwts.parser().setSigningKey(Token.keyToken).parseClaimsJws(token).getBody();
-        return claim.getExpiration();
-    }
-    
-    /*public Token ToToken(String token) {
-        Token t = new Token();
-        Claims claim = Jwts.parser().setSigningKey(Token.keyToken).parseClaimsJws(token).getBody();
-        int idUtilisateur = Integer.parseInt(claim.get(key:"idUtilisateur"));
-        t.setUtilisateur(idUtilisateur);
-        t.setToken(token);
-        return t;
-    }*/ 
-
-    public void revokeToken(String token) {
-        revokedTokens.add(token);
-    }
-
-    public boolean isTokenRevoked(String token) {
-        return revokedTokens.contains(token);
     }
 }

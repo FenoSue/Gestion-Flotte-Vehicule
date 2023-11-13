@@ -8,6 +8,8 @@ package services.springboot;
 import classes.springboot.Admin;
 import classes.springboot.HttpRetour;
 import classes.springboot.Token;
+import java.sql.Date;
+import java.time.LocalDate;
 
 /**
  *
@@ -23,7 +25,7 @@ public class ServiceAdmin {
         return admin;
     }
     
-    public HttpRetour Connection(String login, String pwd) throws Exception {
+    public HttpRetour connection(String login, String pwd) throws Exception {
         boolean resultat = false;
         Admin admin = null;
         Admin[] listeAdmin = this.listeAdmin();
@@ -51,6 +53,15 @@ public class ServiceAdmin {
             data[1] = "Passeword obligatoire";
             h.setHttpRetour(h, 400, "Erreur", data);
         }
+        return h;
+    }
+    
+    public HttpRetour deconnection(String tokenUtilisateur) throws Exception {
+        Token newToken = new Token();
+        newToken.setToken(null);
+        newToken.setDateExpiration(null);
+        Token tokenAdmin = token.read(tokenUtilisateur);
+        token.update(tokenAdmin, newToken);
         return h;
     }
 }

@@ -29,11 +29,6 @@ public class TokenService {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + expiration);
 
-        return "Bearer " + Jwts.builder()
-                .setSubject(username)
-                .setIssuedAt(now)
-                .setExpiration(expiryDate)
-                .signWith(SignatureAlgorithm.HS256, secret)
-                .compact();
+        return "Bearer " + Jwts.builder().setSubject(username).setIssuedAt(now).setExpiration(expiryDate).signWith(SignatureAlgorithm.HS256, secret).compact();
     }
 }

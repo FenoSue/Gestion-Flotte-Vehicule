@@ -20,6 +20,13 @@ insert into Admin (login,pwd) values
 ('Solo','solo'),
 ('Maria','1234');
 
+create table Token (
+    id serial primary key,
+    utilisateur integer references Admin (id),
+    token varchar not null,
+    dateExpiration integer
+);
+
 create table Vehicule (
     id serial primary key,
     matricule varchar unique not null,

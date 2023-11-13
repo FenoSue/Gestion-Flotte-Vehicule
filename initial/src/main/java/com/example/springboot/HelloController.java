@@ -113,17 +113,15 @@ public class HelloController {
     @CrossOrigin(origins = "*")
     @PostMapping("/Connection")
     public HttpRetour connection(@RequestBody Admin admin) throws Exception {
-        HttpRetour connection = sa.Connection(admin.getLogin(), admin.getPwd());
+        HttpRetour connection = sa.connection(admin.getLogin(), admin.getPwd());
         return connection;
     }
     
     /* DECONNECTION */
     @CrossOrigin(origins = "*")
     @PostMapping("/Deconnection")
-    public String deconnection(@RequestBody Admin admin) {
-        Token t = token.ReturnToken(admin.getId());
-        String tokenGet = t.getToken();
-        token.revokeToken(tokenGet);
-        return "deconnecté: "+tokenGet;
+    public HttpRetour deconnection(@RequestBody String token) throws Exception {
+        HttpRetour deconnection = sa.deconnection(token);
+        return deconnection;
     }
 }
