@@ -29,7 +29,7 @@ function connection() {
             console.log("Données du web service:", jsonObject.data[0]);
             window.location.href = "menu.html";
         }
-        else if(jsonObject.status==400) {
+        else {
             console.log("Données du web service:", jsonObject.data[0]);
             console.log("Données du web service:", jsonObject.data[1]);
             const erreurLogin = document.getElementById("errorLogin");

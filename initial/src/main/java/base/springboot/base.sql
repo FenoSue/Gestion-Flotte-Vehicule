@@ -23,8 +23,8 @@ insert into Admin (login,pwd) values
 create table Token (
     id serial primary key,
     utilisateur integer references Admin (id),
-    token varchar not null,
-    dateExpiration integer
+    token varchar default 'null',
+    dateExpiration integer default 1
 );
 
 create table Vehicule (

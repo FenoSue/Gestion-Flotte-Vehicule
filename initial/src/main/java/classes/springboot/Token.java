@@ -12,6 +12,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -31,12 +32,12 @@ public class Token {
     @AnnotationField(attribut = "token")
     String token;
     @AnnotationField(attribut = "dateExpiration")
-    Date dateExpiration;
+    int dateExpiration;
 
     public Token() {
     }
 
-    public Token(int utilisateur, String token, Date dateExpiration) {
+    public Token(int utilisateur, String token, int dateExpiration) {
         this.utilisateur = utilisateur;
         this.token = token;
         this.dateExpiration = dateExpiration;
@@ -57,7 +58,7 @@ public class Token {
     public void setUtilisateur(int utilisateur) {
         this.utilisateur = utilisateur;
     }
-    
+
     public String getToken() {
         return token;
     }
@@ -66,11 +67,11 @@ public class Token {
         this.token = token;
     }
 
-    public Date getDateExpiration() {
+    public int getDateExpiration() {
         return dateExpiration;
     }
 
-    public void setDateExpiration(Date dateExpiration) {
+    public void setDateExpiration(int dateExpiration) {
         this.dateExpiration = dateExpiration;
     }
 
@@ -83,25 +84,7 @@ public class Token {
         }
     }
     
-    public Token read(int idAdmin) throws Exception {
-        Token tokenAdmin = new Token();
-        Token token = new Token();
-        Object[] objet = null;
-        int i=0;
-        try {
-            token.setUtilisateur(idAdmin);
-            objet = dao().select(token, null);
-            for(i=0; i<objet.length; i++) {
-                tokenAdmin = (Token) objet[i];
-            }
-        }
-        catch(Exception exception) {
-            throw exception;
-        }
-        return tokenAdmin;
-    }
-    
-    public Token read(String tokenUtilisateur) throws Exception {
+    public Token readByToken(String tokenUtilisateur) throws Exception {
         Token tokenAdmin = new Token();
         Token token = new Token();
         Object[] objet = null;
@@ -140,12 +123,13 @@ public class Token {
     public String genererToken(int utilisateurId) throws Exception {
         Token tokenGenerer = new Token();
         long now = System.currentTimeMillis();
-        Date date = new Date(expiration);
+        int expire = (int) this.expiration/60/60/24;
+        Date date = Date.valueOf(LocalDate.now());
         String token = Jwts.builder().signWith(SignatureAlgorithm.HS256, Token.keyToken).setIssuedAt(new Date(now)).setExpiration(date).claim("idUtilisateur", utilisateurId).compact();
-        Token tokenAdmin = read(utilisateurId);
+        tokenGenerer.setUtilisateur(utilisateurId);
         tokenGenerer.setToken(token);
-        tokenGenerer.setDateExpiration(date);
-        update(tokenAdmin, tokenGenerer);
+        tokenGenerer.setDateExpiration(expire);
+        create(tokenGenerer);
         return token;
     }
 }

@@ -34,17 +34,12 @@ public class ServiceAdmin {
             if(listeAdmin[i].getLogin().equals(login)==true && listeAdmin[i].getPwd().equals(pwd)==true) {
                 resultat = true;
                 admin = a.getById(listeAdmin[i].getId());
-            }
+            }   
         }
         if(resultat==true) {
             String[] data = new String[1];
-            try {
-                String genererToken = token.genererToken(admin.getId());
-                data[0] = genererToken;
-            }
-            catch(Exception ex) {
-                data[0] = "non-connecté";
-            }
+            String genererToken = token.genererToken(admin.getId());
+            data[0] = genererToken;
             h.setHttpRetour(h, 200, "Ok", data);
         }
         else if(resultat==false) {
@@ -58,10 +53,18 @@ public class ServiceAdmin {
     
     public HttpRetour deconnection(String tokenUtilisateur) throws Exception {
         Token newToken = new Token();
-        newToken.setToken(null);
-        newToken.setDateExpiration(null);
-        Token tokenAdmin = token.read(tokenUtilisateur);
-        token.update(tokenAdmin, newToken);
+        newToken.setToken("null");
+        newToken.setDateExpiration(1);
+        Token tokenAdmin = token.readByToken(tokenUtilisateur);
+        if(tokenAdmin.getToken().equals(null)==false) {
+            token.delete(tokenAdmin);
+            h.setHttpRetour(h, 200, "Ok", null);
+        }
+        else {
+            String data[] = new String[1];
+            data[0] = "Erreur";
+            h.setHttpRetour(h, 400, "Erreur", data);
+        }
         return h;
     }
 }

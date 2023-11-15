@@ -4,10 +4,13 @@ D:\ITU\S5 2.0\Mr Rojo\Gestion-Flotte-Vehicule\initial\src\main\java\services\spr
 D:\ITU\S5 2.0\Mr Rojo\Gestion-Flotte-Vehicule\initial\src\main\java\token\springboot\TokenService.java
 D:\ITU\S5 2.0\Mr Rojo\Gestion-Flotte-Vehicule\initial\src\main\java\dao\Dao.java
 D:\ITU\S5 2.0\Mr Rojo\Gestion-Flotte-Vehicule\initial\src\main\java\services\springboot\ServiceKilometrage.java
+D:\ITU\S5 2.0\Mr Rojo\Gestion-Flotte-Vehicule\initial\src\main\java\services\springboot\ServiceKilometrageVehicule.java
+D:\ITU\S5 2.0\Mr Rojo\Gestion-Flotte-Vehicule\initial\src\main\java\classeViews\springboot\KilometrageVehicule.java
 D:\ITU\S5 2.0\Mr Rojo\Gestion-Flotte-Vehicule\initial\src\main\java\connexion\Connexion.java
 D:\ITU\S5 2.0\Mr Rojo\Gestion-Flotte-Vehicule\initial\src\main\java\annotations\AnnotationForeignKey.java
 D:\ITU\S5 2.0\Mr Rojo\Gestion-Flotte-Vehicule\initial\src\main\java\classes\springboot\Vehicule.java
 D:\ITU\S5 2.0\Mr Rojo\Gestion-Flotte-Vehicule\initial\src\main\java\outil\Attribut.java
+D:\ITU\S5 2.0\Mr Rojo\Gestion-Flotte-Vehicule\initial\src\main\java\classes\springboot\HttpRetour.java
 D:\ITU\S5 2.0\Mr Rojo\Gestion-Flotte-Vehicule\initial\src\main\java\classes\springboot\Token.java
 D:\ITU\S5 2.0\Mr Rojo\Gestion-Flotte-Vehicule\initial\src\main\java\com\example\springboot\Application.java
 D:\ITU\S5 2.0\Mr Rojo\Gestion-Flotte-Vehicule\initial\src\main\java\classes\springboot\Admin.java
