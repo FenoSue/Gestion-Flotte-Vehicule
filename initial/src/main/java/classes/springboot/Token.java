@@ -32,12 +32,12 @@ public class Token {
     @AnnotationField(attribut = "token")
     String token;
     @AnnotationField(attribut = "dateExpiration")
-    int dateExpiration;
+    Date dateExpiration;
 
     public Token() {
     }
 
-    public Token(int utilisateur, String token, int dateExpiration) {
+    public Token(int utilisateur, String token, Date dateExpiration) {
         this.utilisateur = utilisateur;
         this.token = token;
         this.dateExpiration = dateExpiration;
@@ -67,11 +67,11 @@ public class Token {
         this.token = token;
     }
 
-    public int getDateExpiration() {
+    public Date getDateExpiration() {
         return dateExpiration;
     }
 
-    public void setDateExpiration(int dateExpiration) {
+    public void setDateExpiration(Date dateExpiration) {
         this.dateExpiration = dateExpiration;
     }
 
@@ -124,11 +124,11 @@ public class Token {
         Token tokenGenerer = new Token();
         long now = System.currentTimeMillis();
         int expire = (int) this.expiration/60/60/24;
-        Date date = Date.valueOf(LocalDate.now());
+        Date date = Date.valueOf(LocalDate.now().plusDays(expire));
         String token = Jwts.builder().signWith(SignatureAlgorithm.HS256, Token.keyToken).setIssuedAt(new Date(now)).setExpiration(date).claim("idUtilisateur", utilisateurId).compact();
         tokenGenerer.setUtilisateur(utilisateurId);
         tokenGenerer.setToken(token);
-        tokenGenerer.setDateExpiration(expire);
+        tokenGenerer.setDateExpiration(date);
         create(tokenGenerer);
         return token;
     }

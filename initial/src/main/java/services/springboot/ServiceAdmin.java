@@ -8,8 +8,6 @@ package services.springboot;
 import classes.springboot.Admin;
 import classes.springboot.HttpRetour;
 import classes.springboot.Token;
-import java.sql.Date;
-import java.time.LocalDate;
 
 /**
  *
@@ -52,16 +50,14 @@ public class ServiceAdmin {
     }
     
     public HttpRetour deconnection(String tokenUtilisateur) throws Exception {
-        Token newToken = new Token();
-        newToken.setToken("null");
-        newToken.setDateExpiration(1);
         Token tokenAdmin = token.readByToken(tokenUtilisateur);
-        if(tokenAdmin.getToken().equals(null)==false) {
+        String data[] = new String[1];
+        if(tokenAdmin.getToken().equals(null)==false) { 
             token.delete(tokenAdmin);
-            h.setHttpRetour(h, 200, "Ok", null);
+            data[0] = "Deconnecté";
+            h.setHttpRetour(h, 200, "Ok", data);
         }
         else {
-            String data[] = new String[1];
             data[0] = "Erreur";
             h.setHttpRetour(h, 400, "Erreur", data);
         }

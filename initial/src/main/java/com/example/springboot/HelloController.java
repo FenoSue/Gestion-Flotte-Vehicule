@@ -119,8 +119,8 @@ public class HelloController {
     
     /* DECONNECTION */
     @CrossOrigin(origins = "*")
-    @PostMapping("/Deconnection")
-    public HttpRetour deconnection(@RequestBody String token) throws Exception {
+    @GetMapping("/Deconnection")
+    public HttpRetour deconnection(@RequestParam String token) throws Exception {
         HttpRetour deconnection = sa.deconnection(token);
         return deconnection;
     }
