@@ -31,7 +31,7 @@ public class ServiceAdmin {
         for(i=0; i<listeAdmin.length; i++) {
             if(listeAdmin[i].getLogin().equals(login)==true && listeAdmin[i].getPwd().equals(pwd)==true) {
                 resultat = true;
-                admin = a.getById(listeAdmin[i].getId());
+                admin = listeAdmin[i];
             }   
         }
         if(resultat==true) {

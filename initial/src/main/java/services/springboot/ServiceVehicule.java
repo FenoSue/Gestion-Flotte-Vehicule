@@ -6,6 +6,7 @@
 package services.springboot;
 
 import classes.springboot.HttpRetour;
+import classes.springboot.Token;
 import classes.springboot.Vehicule;
 
 /**
@@ -16,17 +17,23 @@ public class ServiceVehicule {
     HttpRetour h = new HttpRetour();
     Vehicule v = new Vehicule();
     
-    public HttpRetour insertVehicule(String matricule, String marque, String modele) throws Exception {
-        if(matricule!=null && marque!=null && modele!=null) {
-            v.create(matricule, marque, modele);
-            Object[] data = new Object[1];
-            data[0] = new Vehicule(matricule, marque, modele);
-            h.setHttpRetour(h, 200, "Ok", data);
+    public HttpRetour insertVehicule(String token, String matricule, String marque, String modele) throws Exception {
+        int idAdmin = 0;
+        Object[] data = new Object[1];
+        if(token==null) {
+            h.setHttpRetour(h, 404, "Vous devez vous connecté pour inserer un vehicule", null);
         }
         else {
-            String[] data = new String[1];
-            data[0] = "Champ obligatoire";
-            h.setHttpRetour(h, 500, "Erreur", data);
+            idAdmin = new Token().readByToken(token).getUtilisateur();
+            if(matricule!=null && marque!=null && modele!=null) {
+                v.create(idAdmin, matricule, marque, modele);
+                data[0] = new Vehicule().readLast();
+                h.setHttpRetour(h, 200, "Ok", data);
+            }
+            else {
+                data[0] = "Champ obligatoire";
+                h.setHttpRetour(h, 400, "Erreur", data);
+            }
         }
         return h;
     }
@@ -41,15 +48,24 @@ public class ServiceVehicule {
         else {
             String[] data = new String[1];
             data[0] = "Aucun Vehicule correspondant à idVehicule = "+idVehicule;
-            h.setHttpRetour(h, 500, "Erreur", data);
+            h.setHttpRetour(h, 400, "Erreur", data);
         }
         return h;
     }
     
-    public HttpRetour listeVehicule() throws Exception {
-        Vehicule[] vehicule = v.read();
-        if(vehicule.length!=0) {
-            h.setHttpRetour(h, 200, "Ok", vehicule);
+    public HttpRetour listeVehicule(String token) throws Exception {
+        Vehicule v = new Vehicule();
+        int idAdmin = 0;
+        if(token!=null) {
+            idAdmin = new Token().readByToken(token).getUtilisateur();
+            v.setIdAdmin(idAdmin);
+            Vehicule[] vehicule = v.read(v);
+            if(vehicule.length!=0) {
+                h.setHttpRetour(h, 200, "Ok", vehicule);
+            }
+            else {
+                h.setHttpRetour(h, 500, "Erreur", null);
+            }
         }
         else {
             h.setHttpRetour(h, 500, "Erreur", null);
@@ -66,7 +82,7 @@ public class ServiceVehicule {
             v.update(vehicule, newVehicule);
         }
         else {
-            h.setHttpRetour(h, 500, "Erreur", null);
+            h.setHttpRetour(h, 400, "Erreur", null);
         }
         return h;
     }

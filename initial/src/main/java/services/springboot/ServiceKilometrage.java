@@ -7,6 +7,7 @@ package services.springboot;
 
 import classes.springboot.HttpRetour;
 import classes.springboot.Kilometrage;
+import classes.springboot.Token;
 import java.sql.Date;
 
 /**
@@ -17,21 +18,34 @@ public class ServiceKilometrage {
     Kilometrage k = new Kilometrage();
     HttpRetour h = new HttpRetour();
     
-    public HttpRetour insertKilometrage(int idVehicule, Date dateKilometrage, int debutKilometrage, int finKilometrage) throws Exception {
-        if(idVehicule!=0 || dateKilometrage!=null || debutKilometrage!=0 || finKilometrage!=0) {
-            k.create(idVehicule, dateKilometrage, debutKilometrage, finKilometrage);
-            Kilometrage kilometrage = new Kilometrage(idVehicule, dateKilometrage, debutKilometrage, finKilometrage);
-            Object[] data = new Object[1];
-            data[0] = kilometrage;
-            h.setHttpRetour(h, 202, "Ok", data);
+    public HttpRetour insertKilometrage(String token, int idVehicule, Date dateKilometrage, int debutKilometrage, int finKilometrage) throws Exception {
+        if(token!=null) {
+            boolean resultat = new Token().verifieToken(token);
+            if(resultat==true) {
+                if(idVehicule!=0 || dateKilometrage!=null || debutKilometrage!=0 || finKilometrage!=0) {
+                    k.create(idVehicule, dateKilometrage, debutKilometrage, finKilometrage);
+                    Kilometrage kilometrage = new Kilometrage(idVehicule, dateKilometrage, debutKilometrage, finKilometrage);
+                    Object[] data = new Object[1];
+                    data[0] = kilometrage;
+                    h.setHttpRetour(h, 200, "Ok", data);
+                }
+                else {
+                    String[] data = new String[4];
+                    int i=0;
+                    for(i=0; i<data.length; i++) {
+                        data[i] = "Champ obligatoire";
+                    }
+                    h.setHttpRetour(h, 505, "Erreur", data);
+                }
+            }
+            else {
+                String[] data = new String[1];
+                data[0] = "Vous devez vous deconnectez";
+                h.setHttpRetour(h, 506, "Erreur", null);
+            }
         }
         else {
-            String[] data = new String[4];
-            int i=0;
-            for(i=0; i<data.length; i++) {
-                data[i] = "Champ obligatoire";
-            }
-            h.setHttpRetour(h, 505, "Erreur", data);
+            h.setHttpRetour(h, 507, "Erreur", null);
         }
         return h;
     }

@@ -21,14 +21,14 @@ insert into Admin (login,pwd) values
 ('Maria','1234');
 
 create table Token (
-    id serial primary key,
     utilisateur integer references Admin (id),
-    token varchar default 'null',
+    token varchar unique,
     dateExpiration integer default 1
 );
 
 create table Vehicule (
     id serial primary key,
+    idAdmin integer references Admin (id),
     matricule varchar unique not null,
     marque varchar not null,
     modele varchar not null
@@ -43,6 +43,6 @@ create table Kilometrage (
 );
 
 create view KilometrageVehicule as
-select vehicule.id as idVehicule, vehicule.matricule as matricule, vehicule.marque as marque, vehicule.modele as modele, 
+select vehicule.idadmin as idadmin, vehicule.id as idVehicule, vehicule.matricule as matricule, vehicule.marque as marque, vehicule.modele as modele, 
 kilometrage.datekilometrage as dateKilometrage, kilometrage.debutkilometrage as debut,kilometrage.finkilometrage as fin 
 from vehicule join kilometrage on vehicule.id=kilometrage.idvehicule;

@@ -36,16 +36,16 @@ public class HelloController {
     /* INSERTION DE VEHICULE */
     @CrossOrigin(origins = "*")
     @GetMapping("/AddVehicule")
-    public String insertVoiture(String matricule, String marque, String modele) throws Exception {
-        sv.insertVehicule(matricule, marque, modele);
-        return "ok insert Vehicule";
+    public HttpRetour insertVoiture(@RequestParam String token, @RequestParam String matricule, @RequestParam String marque, @RequestParam String modele) throws Exception {
+        HttpRetour vehicule = sv.insertVehicule(token, matricule, marque, modele);
+        return vehicule;
     }
     
     /* LISTE DES VEHICULE */
     @CrossOrigin(origins = "*")
-    @PostMapping("/ShowVehicule")
-    public ResponseEntity<HttpRetour> listeVehicule() throws Exception {
-        HttpRetour vehicule = sv.listeVehicule();
+    @GetMapping("/ShowVehicule")
+    public ResponseEntity<HttpRetour> listeVehicule(@RequestParam String token) throws Exception {
+        HttpRetour vehicule = sv.listeVehicule(token);
         ResponseEntity<HttpRetour> response = new ResponseEntity<>(vehicule, HttpStatus.OK);
         return response;
     }
@@ -69,17 +69,16 @@ public class HelloController {
     /* INSERTION DE KILOMETRAGE D'UN VEHICULE */
     @CrossOrigin(origins = "*")
     @GetMapping("/AddKilometrage")
-    public HttpRetour insertKilometrage(int idVehicule, Date dateKilometrage, int debutKilometrage, int finKilometrage) throws Exception {
-        HttpRetour kilometrage = sk.insertKilometrage(idVehicule, dateKilometrage, debutKilometrage, finKilometrage);
+    public HttpRetour insertKilometrage(String token, int idVehicule, Date dateKilometrage, int debutKilometrage, int finKilometrage) throws Exception {
+        HttpRetour kilometrage = sk.insertKilometrage(token, idVehicule, dateKilometrage, debutKilometrage, finKilometrage);
         return kilometrage;
     }
     
     /* GET KILOMETRAGE D'UN VEHICULE */
     @CrossOrigin(origins = "*")
     @GetMapping("/ShowKilometrageVehicule")
-    public ResponseEntity<HttpRetour> getKilometrageVehicule(@RequestParam String idVehicule) throws Exception {
-        int id = Integer.parseInt(idVehicule);
-        HttpRetour kilometrage = skv.getKilometrageVehicule(id);
+    public ResponseEntity<HttpRetour> getKilometrageVehicule(@RequestParam String token, @RequestParam String idVehicule) throws Exception {
+        HttpRetour kilometrage = skv.getKilometrageVehicule(token, idVehicule);
         ResponseEntity<HttpRetour> response = new ResponseEntity<>(kilometrage, HttpStatus.OK);
         return response;
     }

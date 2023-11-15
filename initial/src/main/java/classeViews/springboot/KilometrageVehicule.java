@@ -16,6 +16,8 @@ import java.sql.Date;
  */
 @AnnotationClass(table = "KilometrageVehicule")
 public class KilometrageVehicule {
+    @AnnotationField(attribut = "idAdmin")
+    int idAdmin;
     @AnnotationField(attribut = "idVehicule")
     int idVehicule;
     @AnnotationField(attribut = "matricule")
@@ -34,7 +36,8 @@ public class KilometrageVehicule {
     public KilometrageVehicule() {
     }
 
-    public KilometrageVehicule(int idVehicule, String matricule, String marque, String modele, Date datekilometrage, int debut, int fin) {
+    public KilometrageVehicule(int idAdmin, int idVehicule, String matricule, String marque, String modele, Date datekilometrage, int debut, int fin) {
+        this.idAdmin = idAdmin;
         this.idVehicule = idVehicule;
         this.matricule = matricule;
         this.marque = marque;
@@ -42,6 +45,14 @@ public class KilometrageVehicule {
         this.dateKilometrage = datekilometrage;
         this.debut = debut;
         this.fin = fin;
+    }
+
+    public int getIdAdmin() {
+        return idAdmin;
+    }
+
+    public void setIdAdmin(int idAdmin) {
+        this.idAdmin = idAdmin;
     }
 
     public int getIdVehicule() {

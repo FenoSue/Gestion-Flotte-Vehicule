@@ -17,6 +17,8 @@ import static dao.Dao.dao;
 public class Vehicule {
     @AnnotationField(attribut = "id")
     int id;
+    @AnnotationField(attribut = "idAdmin")
+    int idAdmin;
     @AnnotationField(attribut = "matricule")
     String matricule;
     @AnnotationField(attribut = "marque")
@@ -27,7 +29,8 @@ public class Vehicule {
     public Vehicule() {
     }
 
-    public Vehicule(String matricule, String marque, String modele) {
+    public Vehicule(int idAdmin, String matricule, String marque, String modele) {
+        this.idAdmin = idAdmin;
         this.matricule = matricule;
         this.marque = marque;
         this.modele = modele;
@@ -39,6 +42,14 @@ public class Vehicule {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getIdAdmin() {
+        return idAdmin;
+    }
+
+    public void setIdAdmin(int idAdmin) {
+        this.idAdmin = idAdmin;
     }
 
     public String getMatricule() {
@@ -68,9 +79,11 @@ public class Vehicule {
     public Vehicule getById(int id) throws Exception {
         Vehicule vehicule = new Vehicule();
         Vehicule[] listeVehicule = null;
+        Vehicule v = new Vehicule();
         int i=0;
         try {
-            listeVehicule = this.read();
+            v.setId(id);
+            listeVehicule = this.read(v);
             for(i=0; i<listeVehicule.length; i++) {
                 if(listeVehicule[i].getId()==id) {
                     vehicule = listeVehicule[i];
@@ -84,9 +97,9 @@ public class Vehicule {
         return vehicule;
     }
     
-    public void create(String matricule, String marque, String modele) throws Exception {
+    public void create(int idAdmin, String matricule, String marque, String modele) throws Exception {
         try {
-            Vehicule vehicule = new Vehicule(matricule, marque, modele);
+            Vehicule vehicule = new Vehicule(idAdmin, matricule, marque, modele);
             dao().insert(vehicule, null);
         }
         catch(Exception exception) {
@@ -94,12 +107,28 @@ public class Vehicule {
         }
     }
     
-    public Vehicule[] read() throws Exception {
-        Vehicule[] listeVehicule = null;
+    public Vehicule readLast() throws Exception {
+        Vehicule listeVehicule = new Vehicule();
         Object[] objet = null;
         int i=0;
         try {
             objet = dao().select(this, null);
+            for(i=0; i<objet.length; i++) {
+                listeVehicule = (Vehicule) objet[i];
+            }
+        }
+        catch(Exception exception) {
+            throw exception;
+        }
+        return listeVehicule;
+    }
+    
+    public Vehicule[] read(Vehicule vehicule) throws Exception {
+        Vehicule[] listeVehicule = null;
+        Object[] objet = null;
+        int i=0;
+        try {
+            objet = dao().select(vehicule, null);
             listeVehicule = new Vehicule[objet.length];
             for(i=0; i<objet.length; i++) {
                 listeVehicule[i] = (Vehicule) objet[i];

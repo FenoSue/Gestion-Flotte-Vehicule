@@ -7,6 +7,7 @@ package services.springboot;
 
 import classeViews.springboot.KilometrageVehicule;
 import classes.springboot.HttpRetour;
+import classes.springboot.Token;
 
 /**
  *
@@ -16,15 +17,29 @@ public class ServiceKilometrageVehicule {
     HttpRetour h = new HttpRetour();
     KilometrageVehicule kv = new KilometrageVehicule();
     
-    public HttpRetour getKilometrageVehicule(int idVehicule) throws Exception {
-        if(idVehicule!=0) {
-            KilometrageVehicule vehicule = new KilometrageVehicule();
-            vehicule.setIdVehicule(idVehicule);
-            KilometrageVehicule[] kilometrage = kv.read(vehicule);
-            h.setHttpRetour(h, 200, "Ok", kilometrage);
+    public HttpRetour getKilometrageVehicule(String token, String idVehicule) throws Exception {
+        int idA = 0;
+        int idV = 0;
+        if(token!=null) {
+            idA = new Token().readByToken(token).getUtilisateur();
+            System.out.println("idAdmin : "+idA);
+            if(idVehicule!=null) {
+                idV = Integer.parseInt(idVehicule);
+                System.out.println("idAdmin : "+idV);
+                KilometrageVehicule vehicule = new KilometrageVehicule();
+                vehicule.setIdAdmin(idA);
+                vehicule.setIdVehicule(idV);
+                KilometrageVehicule[] kilometrage = kv.read(vehicule);
+                h.setHttpRetour(h, 200, "Ok", kilometrage);
+            }
+            else {
+                h.setHttpRetour(h, 505, "Erreur", null);
+            }
         }
         else {
-            h.setHttpRetour(h, 505, "Erreur", null);
+            String[] data = new String[1];
+            data[0] = "Vous devez vous connectez";
+            h.setHttpRetour(h, 505, "Erreur", data);
         }
         return h;
     }

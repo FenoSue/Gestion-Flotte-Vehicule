@@ -25,8 +25,6 @@ public class Token {
     public static final long expiration = 86400;
     public static final String keyToken = "Token22";
     
-    @AnnotationField(attribut = "id")
-    int id;
     @AnnotationField(attribut = "utilisateur")
     int utilisateur;
     @AnnotationField(attribut = "token")
@@ -41,14 +39,6 @@ public class Token {
         this.utilisateur = utilisateur;
         this.token = token;
         this.dateExpiration = dateExpiration;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public int getUtilisateur() {
@@ -131,5 +121,14 @@ public class Token {
         tokenGenerer.setDateExpiration(date);
         create(tokenGenerer);
         return token;
+    }
+    
+    public boolean verifieToken(String token) throws Exception {
+        boolean resultat = false;
+        Token tokenAdmin = readByToken(token);
+        if(tokenAdmin.getToken()!=null) {
+            resultat = true;
+        }
+        return resultat;
     }
 }
