@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import services.springboot.ServiceAdmin;
@@ -36,8 +37,10 @@ public class HelloController {
     /* INSERTION DE VEHICULE */
     @CrossOrigin(origins = "*")
     @GetMapping("/AddVehicule")
-    public HttpRetour insertVoiture(@RequestParam String token, @RequestParam String matricule, @RequestParam String marque, @RequestParam String modele) throws Exception {
-        HttpRetour vehicule = sv.insertVehicule(token, matricule, marque, modele);
+    public HttpRetour insertVoiture(@RequestHeader(name = "Authorization") String token, @RequestParam String matricule, @RequestParam String marque, @RequestParam String modele) 
+            throws Exception {
+        String realToken = token.substring(7, token.length());
+        HttpRetour vehicule = sv.insertVehicule(realToken, matricule, marque, modele);
         return vehicule;
     }
     
