@@ -52,7 +52,7 @@ public class ServiceAdmin {
     public HttpRetour deconnection(String tokenUtilisateur) throws Exception {
         Token tokenAdmin = token.readByToken(tokenUtilisateur);
         String data[] = new String[1];
-        if(tokenAdmin.getToken().equals(null)==false) { 
+        if(tokenAdmin.getToken() == null==false) { 
             token.delete(tokenAdmin);
             data[0] = "Deconnecté";
             h.setHttpRetour(h, 200, "Ok", data);

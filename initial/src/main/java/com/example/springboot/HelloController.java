@@ -47,8 +47,9 @@ public class HelloController {
     /* LISTE DES VEHICULE */
     @CrossOrigin(origins = "*")
     @GetMapping("/ShowVehicule")
-    public ResponseEntity<HttpRetour> listeVehicule(@RequestParam String token) throws Exception {
-        HttpRetour vehicule = sv.listeVehicule(token);
+    public ResponseEntity<HttpRetour> listeVehicule(@RequestHeader(name = "Authorization") String token) throws Exception {
+        String realToken = token.substring(7, token.length());
+        HttpRetour vehicule = sv.listeVehicule(realToken);
         ResponseEntity<HttpRetour> response = new ResponseEntity<>(vehicule, HttpStatus.OK);
         return response;
     }
@@ -72,16 +73,19 @@ public class HelloController {
     /* INSERTION DE KILOMETRAGE D'UN VEHICULE */
     @CrossOrigin(origins = "*")
     @GetMapping("/AddKilometrage")
-    public HttpRetour insertKilometrage(String token, int idVehicule, Date dateKilometrage, int debutKilometrage, int finKilometrage) throws Exception {
-        HttpRetour kilometrage = sk.insertKilometrage(token, idVehicule, dateKilometrage, debutKilometrage, finKilometrage);
+    public HttpRetour insertKilometrage(@RequestHeader(name = "Authorization") String token, int idVehicule, Date dateKilometrage, int debutKilometrage, int finKilometrage) 
+            throws Exception {
+        String realToken = token.substring(7, token.length());
+        HttpRetour kilometrage = sk.insertKilometrage(realToken, idVehicule, dateKilometrage, debutKilometrage, finKilometrage);
         return kilometrage;
     }
     
     /* GET KILOMETRAGE D'UN VEHICULE */
     @CrossOrigin(origins = "*")
     @GetMapping("/ShowKilometrageVehicule")
-    public ResponseEntity<HttpRetour> getKilometrageVehicule(@RequestParam String token, @RequestParam String idVehicule) throws Exception {
-        HttpRetour kilometrage = skv.getKilometrageVehicule(token, idVehicule);
+    public ResponseEntity<HttpRetour> getKilometrageVehicule(@RequestHeader(name = "Authorization") String token, @RequestParam String idVehicule) throws Exception {
+        String realToken = token.substring(7, token.length());
+        HttpRetour kilometrage = skv.getKilometrageVehicule(realToken, idVehicule);
         ResponseEntity<HttpRetour> response = new ResponseEntity<>(kilometrage, HttpStatus.OK);
         return response;
     }
@@ -122,8 +126,9 @@ public class HelloController {
     /* DECONNECTION */
     @CrossOrigin(origins = "*")
     @GetMapping("/Deconnection")
-    public HttpRetour deconnection(@RequestParam String token) throws Exception {
-        HttpRetour deconnection = sa.deconnection(token);
+    public HttpRetour deconnection(@RequestHeader(name = "Authorization") String token) throws Exception {
+        String realToken = token.substring(7, token.length());
+        HttpRetour deconnection = sa.deconnection(realToken);
         return deconnection;
     }
 }
